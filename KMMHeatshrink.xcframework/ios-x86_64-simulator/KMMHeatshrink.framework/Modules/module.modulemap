@@ -1,8 +1,0 @@
-framework module KMMHeatshrink {
-    umbrella header "KMMHeatshrink.h"
-
-    export *
-    module * { export * }
-
-    use Foundation
-}
