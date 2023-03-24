@@ -50,7 +50,7 @@ jobs:
           target-branch: main
 
   data_changes:
-    name: "Checking that data version has changed"
+    name: "Checking that tag version has changed"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -67,23 +67,37 @@ jobs:
         with:
           script: core.setFailed('data.env has not changed! You need to write human-readable changes')
 
-  create_tag:
-    name: Create Tag
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@master
-      - name: Setup env
-        id: vars
-        run: |
-          export $(cat .github/workflows/data.env | xargs)
-          echo "::set-output name=tag::${TAG}"
-          echo "::set-output name=changelog::${CHANGELOG}"
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.API_TOKEN_GITHUB }}
-        with:
-          tag_name: ${{ steps.vars.outputs.tag }}
-          release_name: Release ${{ steps.vars.outputs.tag }}
+#  create_tag:
+#    name: Create Tag
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@master
+#      - name: Setup env
+#        id: vars
+#        run: |
+#          export $(cat .github/workflows/data.env | xargs)
+#          echo "::set-output name=tag::${TAG}"
+#          echo "::set-output name=changelog::${CHANGELOG}"
+#      - name: Create Release
+#        id: create_release
+#        uses: actions/create-release@latest
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.API_TOKEN_GITHUB }}
+#        with:
+#          tag_name: ${{ steps.vars.outputs.tag }}
+#          release_name: Release ${{ steps.vars.outputs.tag }}
+#
+    create-tag:
+      runs-on: ubuntu-18.04
+
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+
+        - name: Create Tag
+          uses: negz/create-tag@v1
+          with:
+            version: ${{ steps.vars.outputs.tag }}
+            message: Release ${{ steps.vars.outputs.tag }}
+            token: ${{ secrets.GITHUB_TOKEN }}
