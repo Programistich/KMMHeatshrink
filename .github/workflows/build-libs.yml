@@ -59,7 +59,6 @@ jobs:
         run: |
           export $(cat .github/workflows/data.env | xargs)
           echo "::set-output name=tag::${TAG}"
-      - name: Push tag
-        uses: actions-ecosystem/action-push-tag@v2.34.2
+      - uses: thejeff77/action-push-tag@v1.0.0
         with:
           tag: ${{ steps.vars.outputs.tag }}
