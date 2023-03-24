@@ -62,5 +62,4 @@ jobs:
       - name: Set new tag
         uses: thejeff77/action-push-tag@v1.0.0
         with:
-          github_token: ${{ secrets.API_TOKEN_GITHUB }}
           tag: ${{ steps.vars.outputs.tag }}
