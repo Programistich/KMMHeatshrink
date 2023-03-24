@@ -28,11 +28,13 @@ jobs:
   tags:
     runs-on: ubuntu-latest
     steps:
-      - name: Create a GitHub release
-        uses: ncipollo/release-action@v1
+      - name: Setup env
+        id: vars
         run: |
           export $(cat .github/workflows/version.env | xargs)
           echo "::set-output name=tag::${TAG}"
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
         with:
           tag: ${{ steps.vars.outputs.tag }}
           name: Release ${{ steps.vars.outputs.tag }}
