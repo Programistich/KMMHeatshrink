@@ -15,7 +15,7 @@ val libraryGroup: String = System.getProperty("group", "com.flipperdevices.kmm.h
 
 val libraryName = "KMMHeatshrink"
 val librarySwiftVersion = "5.3"
-val libraryIOSVersion = "13.0"
+val libraryIOSVersion = "13"
 val libraryAndroidMinSDK = 21
 val libraryAndroidCompileSDK = 33
 
