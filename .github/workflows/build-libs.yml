@@ -54,12 +54,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Set variables
+      - name: 'Set variables'
         id: vars
         run: |
           export $(cat .github/workflows/data.env | xargs)
           echo "::set-output name=tag::${TAG}"
       - name: Push tag
-        uses: actions-ecosystem/action-push-tag@v1
+        uses: actions-ecosystem/action-push-tag@v2.34.2
         with:
           tag: ${{ steps.vars.outputs.tag }}
