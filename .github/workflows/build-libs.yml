@@ -53,12 +53,14 @@ jobs:
     release:
       runs-on: ubuntu-latest
       steps:
-        - uses: actions/checkout@v2
-        - name: 'Set variables'
+        - name: Checkout
+          uses: actions/checkout@v2
+        - name: Set variables
           id: vars
           run: |
             export $(cat .github/workflows/data.env | xargs)
             echo "::set-output name=tag::${TAG}"
-        - uses: actions-ecosystem/action-push-tag@v1
+        - name: Push tag
+          uses: actions-ecosystem/action-push-tag@v1
           with:
             tag: ${{ steps.vars.outputs.tag }}
