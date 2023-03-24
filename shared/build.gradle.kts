@@ -4,7 +4,7 @@ plugins {
     id("com.android.library")
     id("com.goncalossilva.resources")
     id("com.chromaticnoise.multiplatform-swiftpackage")
-    `maven-publish`
+    id("maven-publish")
 }
 
 val okioVersion = "3.3.0"
@@ -35,7 +35,9 @@ kotlin {
     }
 
 
-    android()
+    android {
+        publishLibraryVariants("release")
+    }
     iosX64()
     iosArm64()
     iosSimulatorArm64()
