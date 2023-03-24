@@ -5,7 +5,6 @@ import com.flipperdevices.heatshrink.models.HsResult
 import okio.Buffer
 import okio.IOException
 import kotlin.experimental.ExperimentalObjCName
-import kotlin.experimental.and
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.native.ObjCName
@@ -14,12 +13,12 @@ import kotlin.native.ObjCName
 @ObjCName(swiftName = "HsInputStream")
 class HsInputStream(
     private val array: ByteArray,
-    private val windowSize: Int = 11,
-    private val lookaheadSize: Int = 4,
-    private val bufferSize: Int = bestInputBufferSize(0, windowSize),
-    private var inputBuffer: ByteArray = ByteArray(bufferSize) { 0 },
-    private val window: ByteArray = ByteArray(1 shl windowSize) { 0 },
+    private val windowSize: Int,
+    private val lookaheadSize: Int,
 ) {
+    private val bufferSize: Int = bestInputBufferSize(0, windowSize)
+    private var inputBuffer: ByteArray = ByteArray(bufferSize) { 0 }
+    private val window: ByteArray = ByteArray(1 shl windowSize) { 0 }
     private val state: HsInputState = HsInputState.TAG_BIT
     private var outputCount: Int = 0
     private var outputIndex: Int = 0

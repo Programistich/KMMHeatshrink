@@ -101,6 +101,8 @@ configure<PublishingExtension> {
         create<MavenPublication>("maven") {
             groupId = libraryPackage
             version = libraryVersion
+
+            from(components["kotlin"])
         }
     }
 }
