@@ -110,8 +110,6 @@ configure<PublishingExtension> {
         create<MavenPublication>("maven") {
             groupId = libraryGroup
             version = libraryVersion
-
-            from(components["kotlin"])
         }
     }
 }
