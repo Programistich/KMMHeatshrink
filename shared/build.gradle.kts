@@ -8,21 +8,28 @@ plugins {
 }
 
 val okioVersion = "3.3.0"
+val resourcesVersion = "0.3.0"
+
 val libraryVersion: String = System.getProperty("version", "debug")
-val libraryPackage: String = System.getProperty("group", "com.flipperdevices.kmm-heatshrink")
+val libraryGroup: String = System.getProperty("group", "com.flipperdevices.kmm.heatshrink")
+
+val libraryName = "KMMHeatshrink"
+val librarySwiftVersion = "5.3"
+val libraryIOSVersion = "13.0"
+val libraryAndroidMinSDK = 21
+val libraryAndroidCompileSDK = 33
+
 
 /* required for maven publication */
-group = "com.flipperdevices.heatshrink"
+group = libraryGroup
 version = libraryVersion
 
 kotlin {
     cocoapods {
         version = libraryVersion
-        summary = "Kotlin Multiplatform Heatshrink library"
-        homepage = ""
 
         framework {
-            baseName = "KMMHeatshrink"
+            baseName = libraryName
             isStatic = true
         }
     }
@@ -57,7 +64,7 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
-                implementation("com.goncalossilva:resources:0.3.0")
+                implementation("com.goncalossilva:resources:$resourcesVersion")
             }
         }
         val androidUnitTest by getting
@@ -76,10 +83,10 @@ kotlin {
 }
 
 android {
-    namespace = "com.flipperdevices.heatshrink"
-    compileSdk = 31
+    namespace = libraryGroup
+    compileSdk = libraryAndroidCompileSDK
     defaultConfig {
-        minSdk = 21
+        minSdk = libraryAndroidMinSDK
     }
 
     compileOptions {
@@ -89,17 +96,17 @@ android {
 }
 
 multiplatformSwiftPackage {
-    packageName("KMMHeatshrink")
-    swiftToolsVersion("5.3")
+    packageName(libraryName)
+    swiftToolsVersion(librarySwiftVersion)
     targetPlatforms {
-        iOS { v("13") }
+        iOS { v(libraryIOSVersion) }
     }
 }
 
 configure<PublishingExtension> {
     publications {
         create<MavenPublication>("maven") {
-            groupId = libraryPackage
+            groupId = libraryGroup
             version = libraryVersion
 
             from(components["kotlin"])

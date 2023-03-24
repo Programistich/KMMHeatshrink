@@ -3,8 +3,7 @@ name: Build Swift Package
 on:
   push:
     branches:
-      - 'dev'
-      - 'master'
+      - 'main'
   workflow_dispatch:
 
 jobs:
@@ -25,6 +24,18 @@ jobs:
           name: swiftpackage
           path: shared/swiftpackage
           retention-days: 1
+
+  tags:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
+        run: |
+          export $(cat .github/workflows/version.env | xargs)
+          echo "::set-output name=tag::${TAG}"
+        with:
+          tag: ${{ steps.vars.outputs.tag }}
+          name: Release ${{ steps.vars.outputs.tag }}
 
   push:
     needs: build

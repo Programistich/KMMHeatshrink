@@ -5,7 +5,7 @@ Pod::Spec.new do |spec|
     spec.source                   = { :http=> ''}
     spec.authors                  = ''
     spec.license                  = ''
-    spec.summary                  = 'Kotlin Multiplatform Heatshrink library'
+    spec.summary                  = ''
     spec.vendored_frameworks      = 'build/cocoapods/framework/KMMHeatshrink.framework'
     spec.libraries                = 'c++'
                 
