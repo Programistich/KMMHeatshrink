@@ -50,17 +50,16 @@ jobs:
           target-branch: main
 
   create_tag:
-    release:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v2
-        - name: Set variables
-          id: vars
-          run: |
-            export $(cat .github/workflows/data.env | xargs)
-            echo "::set-output name=tag::${TAG}"
-        - name: Push tag
-          uses: actions-ecosystem/action-push-tag@v1
-          with:
-            tag: ${{ steps.vars.outputs.tag }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set variables
+        id: vars
+        run: |
+          export $(cat .github/workflows/data.env | xargs)
+          echo "::set-output name=tag::${TAG}"
+      - name: Push tag
+        uses: actions-ecosystem/action-push-tag@v1
+        with:
+          tag: ${{ steps.vars.outputs.tag }}
