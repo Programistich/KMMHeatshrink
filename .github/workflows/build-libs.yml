@@ -10,14 +10,15 @@ jobs:
   build-swift-package:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: set up JDK 11
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
           java-version: 11
+          cache: 'gradle'
       - name: Build iOS framework
         id: buildPackage
-        run: ./gradlew createSwiftPackage
+        run: ./gradlew createSwiftPackage --no-daemon
       - name: Upload Swift Package directory
         uses: actions/upload-artifact@v2
         with:
@@ -26,7 +27,7 @@ jobs:
           retention-days: 1
 
   push-swift-package:
-    needs: build
+    needs: build-swift-package
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
