@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-swift-package:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
@@ -25,45 +25,7 @@ jobs:
           path: shared/swiftpackage
           retention-days: 1
 
-  tags_changes:
-    name: "Checking that tag version has changed"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
-      - name: Get change status for tag.env
-        id: changed-changelog
-        uses: tj-actions/changed-files@v18.7
-        with:
-          files: .github/workflows/tag.env
-      - name: Failed if tag.env not changed
-        if: steps.changed-changelog.outputs.any_changed != 'true'
-        uses: actions/github-script@v3
-        with:
-          script: core.setFailed('tag.env has not changed! You need to write human-readable changes in each Pull Request')
-
-  create_release:
-    name: Create Release
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@master
-      - name: Setup env
-        id: vars
-        run: |
-          export $(cat .github/workflows/tag.env | xargs)
-          echo "::set-output name=tag::${TAG}"
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.API_TOKEN_GITHUB }}
-        with:
-          tag_name: ${{ steps.vars.outputs.tag }}
-          release_name: Release ${{ steps.vars.outputs.tag }}
-
-  push:
+  push-swift-package:
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -84,3 +46,43 @@ jobs:
           destination-repository-name: 'KMMHeatshrinkSwiftPackage'
           user-email: dzhos.oleksii@gmail.com
           target-branch: main
+
+  data_changes:
+    name: "Checking that data version has changed"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - name: Get change status for data.env
+        id: changed-changelog
+        uses: tj-actions/changed-files@v18.7
+        with:
+          files: .github/workflows/data.env
+      - name: Failed if data.env not changed
+        if: steps.changed-changelog.outputs.any_changed != 'true'
+        uses: actions/github-script@v3
+        with:
+          script: core.setFailed('data.env has not changed! You need to write human-readable changes')
+
+  create_tag:
+    name: Create Tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+      - name: Setup env
+        id: vars
+        run: |
+          export $(cat .github/workflows/data.env | xargs)
+          echo "::set-output name=tag::${TAG}"
+          echo "::set-output name=changelog::${CHANGELOG}"
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          tag_name: ${{ steps.vars.outputs.tag }}
+          release_name: Release ${{ steps.vars.outputs.tag }}
+          body: ${{ steps.vars.outputs.changelog }}
