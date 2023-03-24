@@ -49,8 +49,7 @@ jobs:
           user-email: dzhos.oleksii@gmail.com
           target-branch: main
 
-  changelog_changes:
-    name: "Checking that tag has changed"
+  tag_changes:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
