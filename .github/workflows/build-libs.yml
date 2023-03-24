@@ -86,4 +86,3 @@ jobs:
         with:
           tag_name: ${{ steps.vars.outputs.tag }}
           release_name: Release ${{ steps.vars.outputs.tag }}
-          body: ${{ steps.vars.outputs.changelog }}
