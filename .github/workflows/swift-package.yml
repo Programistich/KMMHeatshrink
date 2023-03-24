@@ -46,4 +46,4 @@ jobs:
           destination-github-username: 'Programistich'
           destination-repository-name: 'KMMHeatshrinkSwiftPackage'
           user-email: dzhos.oleksii@gmail.com
-          target-branch: master
+          target-branch: main
